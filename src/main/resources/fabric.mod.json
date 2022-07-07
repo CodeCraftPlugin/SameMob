@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "samemob",
+  "version": "${version}",
+  "name": "SameMobs",
+  "description": "Fabric mod made using the GeckoLib Mod. I want the mod to have 10 of the exact same basic mobs. Basically each mob just needs to be a wolf but use the geckolib modeling assets. The 10 basic mobs will be neutral mobs where they do not attack the player unless provoked. They must be tamable with a bone (or if an item can be set with the config, that would be better). They will have the same animations that wolves would have plus some extras.  Normal Animations 1: Walk 2: Run 3: Sit 4: Idle 5: Attack",
+  "authors": [
+    "Codecraft"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/samemob/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "me.codecraft.samemobs.client.SameMobsClient"
+    ],
+    "main": [
+      "me.codecraft.samemobs.SameMobs"
+    ]
+  },
+  "mixins": [
+    "SameMobs.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.8",
+    "fabric": "*",
+    "minecraft": "1.19"
+  }
+}
