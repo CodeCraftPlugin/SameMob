@@ -40,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -104,20 +105,31 @@ public class WolfLikeEntity extends TameableEntity implements Angerable, IAnimat
 
     @Override
     public void registerControllers(AnimationData animationData) {
-
+        animationData.addAnimationController(new AnimationController(this,"wolf",0f,this::predicate));
     }
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event){
         if (this.isAlive()) {
             this.lastBegAnimationProgress = this.begAnimationProgress;
             if (this.isBegging()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("beg"));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.beg"));
                 return PlayState.CONTINUE;
-            } else {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle"));
+            } else if (this.isSitting()){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.sitting"));
+                return PlayState.CONTINUE;
+            }else if (event.isMoving()){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.walk"));
+                if (this.speed==0.5f){
+                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.run"));
+                    return PlayState.CONTINUE;
+                }
                 return PlayState.CONTINUE;
             }
-
+            if (this.hasAngerTime()){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.run"));
+                return PlayState.CONTINUE;
+            }
         }
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.idle"));
         return PlayState.CONTINUE;
     }
 

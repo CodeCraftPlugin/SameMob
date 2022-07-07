@@ -3,10 +3,21 @@
 	"animations": {
 		"animation.mob1.idle": {
 			"loop": true,
+			"animation_length": 2,
 			"bones": {
 				"tail": {
 					"rotation": {
-						"vector": [0, "query.is_angry ? -this : (math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed * 80.22 - this)", 0]
+						"0.0": [17.5, 0, 0],
+						"0.5833": [17.25002, 2.99318, -9.54589],
+						"1.25": [17.25002, -2.99318, 9.54589],
+						"1.9583": [17.5, 0, 0]
+					}
+				},
+				"head": {
+					"rotation": {
+						"0.0": [-7.5, 0, 0],
+						"1.0417": [-10, 0, 0],
+						"2.0": [-7.5, 0, 0]
 					}
 				}
 			}
@@ -70,34 +81,141 @@
 			}
 		},
 		"animation.mob1.walk": {
-			"loop": true
+			"loop": true,
+			"animation_length": 1.04167,
+			"bones": {
+				"leg0": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.3333": [-12.5, 0, 0],
+						"0.7083": [12.5, 0, 0],
+						"1.0417": [0, 0, 0]
+					}
+				},
+				"leg1": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.3333": [12.5, 0, 0],
+						"0.7083": [-12.5, 0, 0],
+						"1.0417": [0, 0, 0]
+					}
+				},
+				"leg2": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.3333": [12.5, 0, 0],
+						"0.7083": [-12.5, 0, 0],
+						"1.0417": [0, 0, 0]
+					}
+				},
+				"leg3": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.3333": [-12.5, 0, 0],
+						"0.7083": [12.5, 0, 0],
+						"1.0417": [0, 0, 0]
+					}
+				}
+			}
 		},
 		"animation.mob1.run": {
 			"loop": true,
+			"animation_length": 1.04167,
 			"bones": {
-				"body": {
+				"leg0": {
 					"rotation": {
-						"vector": [0, 0, "variable.body_rot_z - this"]
+						"0.0": [0, 0, 0],
+						"0.3333": [-12.5, 0, 0],
+						"0.7083": [12.5, 0, 0],
+						"1.0417": [0, 0, 0]
 					}
 				},
-				"upperBody": {
+				"leg1": {
 					"rotation": {
-						"vector": [0, 0, "variable.upper_body_rot_z - this"]
+						"0.0": [0, 0, 0],
+						"0.3333": [12.5, 0, 0],
+						"0.7083": [-12.5, 0, 0],
+						"1.0417": [0, 0, 0]
+					}
+				},
+				"leg2": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.3333": [12.5, 0, 0],
+						"0.7083": [-12.5, 0, 0],
+						"1.0417": [0, 0, 0]
+					}
+				},
+				"leg3": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.3333": [-12.5, 0, 0],
+						"0.7083": [12.5, 0, 0],
+						"1.0417": [0, 0, 0]
 					}
 				}
 			}
 		},
 		"animation.mob1.attack": {
-			"loop": true
+			"loop": true,
+			"animation_length": 0.5,
+			"bones": {
+				"head": {
+					"position": {
+						"0.0": [0, 0, 0],
+						"0.25": [0, 0, -6],
+						"0.5": [0, 0, 0]
+					}
+				}
+			}
 		},
 		"animation.mob1.extra_animation_1": {
-			"loop": true
+			"loop": true,
+			"animation_length": 4,
+			"bones": {
+				"head": {
+					"position": {
+						"0.0": [0, 0, 0],
+						"0.9167": [0, 12, 0],
+						"2.2083": [0, 6.97, -21],
+						"4.0": [0, 0, 0]
+					}
+				},
+				"tail": {
+					"position": {
+						"0.0": [0, 0, 2],
+						"0.9167": [0, 0, 13],
+						"2.2083": [0, 17, 8.39],
+						"4.0": [0, 0, 2]
+					}
+				}
+			}
 		},
 		"animation.mob1.extra_animation_2": {
-			"loop": true
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"position": {
+						"0.0": [0, 0, 0],
+						"1.0": [0, 23, 0],
+						"2.0": [0, 0, 0]
+					}
+				}
+			}
 		},
 		"animation.mob1.extra_animation_3": {
-			"loop": true
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"scale": {
+						"0.0": [1, 1, 1],
+						"0.9583": [2, 1.7, 2],
+						"2.0": [1, 1, 1]
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2
