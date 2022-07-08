@@ -1,7 +1,9 @@
 package me.codecraft.samemobs.entity.wolflike.entity;
 
+import me.codecraft.samemobs.effects.SameMobEffects;
 import me.codecraft.samemobs.entity.SameMobsEntity;
 import me.codecraft.samemobs.entity.goal.WolfBegGoal1;
+import me.codecraft.samemobs.utils.IEntityDataSaver;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -13,6 +15,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,7 +53,7 @@ import java.util.EnumSet;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnimatable {
+public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnimatable, IEntityDataSaver {
 
     private static final TrackedData<Boolean> BEGGING;
     private static final TrackedData<Integer> COLLAR_COLOR;
@@ -66,6 +69,7 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
     private float shakeProgress;
     private float lastShakeProgress;
     private static final UniformIntProvider ANGER_TIME_RANGE;
+    private NbtCompound animation;
     @Nullable
     private UUID angryAt;
 
@@ -129,8 +133,22 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
             }
             if (this.hasAngerTime()){
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.run"));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.attack"));
                 return PlayState.CONTINUE;
             }
+            if(this.hasStatusEffect(SameMobEffects.Animation_1)){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.extra_animation_1"));
+                return PlayState.CONTINUE;
+            }
+            if (this.hasStatusEffect(SameMobEffects.Animation_2)){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.extra_animation_2"));
+                return PlayState.CONTINUE;
+            }
+            if (this.hasStatusEffect(SameMobEffects.Animation_3)){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.extra_animation_3"));
+                return PlayState.CONTINUE;
+            }
+
         }
         event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.idle"));
         return PlayState.CONTINUE;
@@ -495,8 +513,30 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
 
         };
     }
+    @Override
+    public NbtCompound getPersistentData() {
+        if(this.animation == null) {
+            this.animation = new NbtCompound();
+        }
+        return animation;
+    }
 
 
+    @Override
+    public NbtCompound writeNbt(NbtCompound nbt) {
+        if(animation!=null){
+            nbt.put("samemob.aniamtion_data",animation);
+        }
+        return super.writeNbt(nbt);
+    }
+
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        if (nbt.contains("samemob.aniamtion_data", 10)) {
+            animation = nbt.getCompound("samemob.aniamtion_data");
+        }
+        super.readNbt(nbt);
+    }
 
     class WolfEscapeDangerGoal extends EscapeDangerGoal {
         public WolfEscapeDangerGoal(double speed) {

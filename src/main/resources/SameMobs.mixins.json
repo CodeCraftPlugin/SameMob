@@ -4,6 +4,7 @@
   "package": "me.codecraft.samemobs.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BrewingRecipeRegistryMixin"
   ],
   "client": [
   ],

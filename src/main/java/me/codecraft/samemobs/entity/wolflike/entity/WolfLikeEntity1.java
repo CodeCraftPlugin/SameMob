@@ -1,5 +1,6 @@
 package me.codecraft.samemobs.entity.wolflike.entity;
 
+import me.codecraft.samemobs.effects.SameMobEffects;
 import me.codecraft.samemobs.entity.SameMobsEntity;
 import me.codecraft.samemobs.entity.goal.WolfBegGoal;
 import me.codecraft.samemobs.entity.goal.WolfBegGoal1;
@@ -128,6 +129,19 @@ public class WolfLikeEntity1 extends TameableEntity implements Angerable, IAnima
             }
             if (this.hasAngerTime()){
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.run"));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.attack"));
+                return PlayState.CONTINUE;
+            }
+            if(this.hasStatusEffect(SameMobEffects.Animation_1)){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.extra_animation_1"));
+                return PlayState.CONTINUE;
+            }
+            if (this.hasStatusEffect(SameMobEffects.Animation_2)){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.extra_animation_2"));
+                return PlayState.CONTINUE;
+            }
+            if (this.hasStatusEffect(SameMobEffects.Animation_3)){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.extra_animation_3"));
                 return PlayState.CONTINUE;
             }
         }

@@ -126,6 +126,7 @@ public class WolfLikeEntity extends TameableEntity implements Angerable, IAnimat
             }
             if (this.hasAngerTime()){
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.run"));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.attack"));
                 return PlayState.CONTINUE;
             }
         }

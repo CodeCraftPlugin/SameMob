@@ -172,21 +172,38 @@
 		"animation.mob1.extra_animation_1": {
 			"loop": true,
 			"animation_length": 4,
+			"override_previous_animation": true,
 			"bones": {
 				"head": {
 					"position": {
-						"0.0": [0, 0, 0],
-						"0.9167": [0, 12, 0],
-						"2.2083": [0, 6.97, -21],
-						"4.0": [0, 0, 0]
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.9167": {
+							"vector": [0, 12, 0]
+						},
+						"2.2083": {
+							"vector": [0, 6.97, -21]
+						},
+						"4.0": {
+							"vector": [0, 0, 0]
+						}
 					}
 				},
 				"tail": {
 					"position": {
-						"0.0": [0, 0, 2],
-						"0.9167": [0, 0, 13],
-						"2.2083": [0, 17, 8.39],
-						"4.0": [0, 0, 2]
+						"0.0": {
+							"vector": [0, 0, 2]
+						},
+						"0.9167": {
+							"vector": [0, 0, 13]
+						},
+						"2.2083": {
+							"vector": [0, 17, 8.39]
+						},
+						"4.0": {
+							"vector": [0, 0, 2]
+						}
 					}
 				}
 			}
@@ -194,6 +211,7 @@
 		"animation.mob1.extra_animation_2": {
 			"loop": true,
 			"animation_length": 2,
+			"override_previous_animation": true,
 			"bones": {
 				"body": {
 					"position": {
@@ -207,6 +225,7 @@
 		"animation.mob1.extra_animation_3": {
 			"loop": true,
 			"animation_length": 2,
+			"override_previous_animation": true,
 			"bones": {
 				"body": {
 					"scale": {
