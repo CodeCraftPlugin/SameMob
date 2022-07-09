@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 public class SameMobsClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        EntityRendererRegistry.register(SameMobsEntity.WOLFLIKEENTITY, WolfLikeEntityRender::new);
         EntityRendererRegistry.register(SameMobsEntity.WOLFLIKEENTITY1, WolfLikeEntityRender1::new);
         EntityRendererRegistry.register(SameMobsEntity.WOLFLIKEENTITY2, WolfLikeEntityRender2::new);
         EntityRendererRegistry.register(SameMobsEntity.WOLFLIKEENTITY3, WolfLikeEntityRender3::new);
@@ -21,5 +20,6 @@ public class SameMobsClient implements ClientModInitializer {
         EntityRendererRegistry.register(SameMobsEntity.WOLFLIKEENTITY7, WolfLikeEntityRender7::new);
         EntityRendererRegistry.register(SameMobsEntity.WOLFLIKEENTITY8, WolfLikeEntityRender8::new);
         EntityRendererRegistry.register(SameMobsEntity.WOLFLIKEENTITY9, WolfLikeEntityRender9::new);
+        EntityRendererRegistry.register(SameMobsEntity.WOLFLIKEENTITY10, WolfLikeEntityRender10::new);
     }
 }

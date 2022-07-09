@@ -18,8 +18,6 @@ public class SameMobPotions {
     }
     public static void register(){
         ANIMATION_1 = registerPotion("animation_trigger_1",new Potion(new StatusEffectInstance(SameMobEffects.Animation_1)));
-        ANIMATION_2 = registerPotion("animation_trigger_2",new Potion(new StatusEffectInstance(SameMobEffects.Animation_2)));
-        ANIMATION_3 = registerPotion("animation_trigger_3",new Potion(new StatusEffectInstance(SameMobEffects.Animation_3)));
         System.out.println("registered all the potions in the mod by " + SameMobs.MOD_ID);
     }
 }

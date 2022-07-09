@@ -1,10 +1,7 @@
 package me.codecraft.samemobs.utils;
 
 import me.codecraft.samemobs.entity.SameMobsEntity;
-import me.codecraft.samemobs.entity.wolflike.entity.WolfLikeEntity;
-import me.codecraft.samemobs.entity.wolflike.entity.WolfLikeEntity1;
-import me.codecraft.samemobs.entity.wolflike.entity.WolfLikeEntity2;
-import me.codecraft.samemobs.entity.wolflike.entity.WolfLikeEntity3;
+import me.codecraft.samemobs.entity.wolflike.entity.BaseWolf;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 
 public class Registry {
@@ -13,16 +10,16 @@ public class Registry {
     }
 
     private static void registerAttribute() {
-        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY, WolfLikeEntity.createWolfAttributes());
-        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY1, WolfLikeEntity1.createWolfAttributes());
-        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY2, WolfLikeEntity2.createWolfAttributes());
-        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY3, WolfLikeEntity3.createWolfAttributes());
-        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY4, WolfLikeEntity3.createWolfAttributes());
-        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY5, WolfLikeEntity3.createWolfAttributes());
-        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY6, WolfLikeEntity3.createWolfAttributes());
-        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY7, WolfLikeEntity3.createWolfAttributes());
-        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY8, WolfLikeEntity3.createWolfAttributes());
-        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY9, WolfLikeEntity3.createWolfAttributes());
+        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY1, BaseWolf.createWolfAttributes());
+        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY2, BaseWolf.createWolfAttributes());
+        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY3, BaseWolf.createWolfAttributes());
+        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY4, BaseWolf.createWolfAttributes());
+        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY5, BaseWolf.createWolfAttributes());
+        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY6, BaseWolf.createWolfAttributes());
+        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY7, BaseWolf.createWolfAttributes());
+        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY8, BaseWolf.createWolfAttributes());
+        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY9, BaseWolf.createWolfAttributes());
+        FabricDefaultAttributeRegistry.register(SameMobsEntity.WOLFLIKEENTITY10, BaseWolf.createWolfAttributes());
     }
 
 }

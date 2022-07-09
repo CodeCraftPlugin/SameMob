@@ -1,12 +1,12 @@
- package me.codecraft.samemobs.entity.wolflike.model;
+package me.codecraft.samemobs.entity.wolflike.model;
 
 import me.codecraft.samemobs.SameMobs;
-import me.codecraft.samemobs.entity.wolflike.entity.WolfLikeEntity1;
+import me.codecraft.samemobs.entity.wolflike.entity.BaseWolf;
 import me.codecraft.samemobs.entity.wolflike.entity.WolfLikeEntity2;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class WolfLikeModel2 extends AnimatedGeoModel<WolfLikeEntity2> {
+public class WolfLikeEntityModel2 extends AnimatedGeoModel<WolfLikeEntity2> {
     @Override
     public Identifier getModelResource(WolfLikeEntity2 object) {
         return new Identifier(SameMobs.MOD_ID,"geo/wolf_like2.geo.json");
