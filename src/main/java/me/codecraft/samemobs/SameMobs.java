@@ -2,6 +2,7 @@ package me.codecraft.samemobs;
 
 import me.codecraft.samemobs.effects.SameMobEffects;
 import me.codecraft.samemobs.entity.SameMobsEntity;
+import me.codecraft.samemobs.item.SameMobItem;
 import me.codecraft.samemobs.potions.SameMobPotions;
 import me.codecraft.samemobs.utils.Registry;
 import net.fabricmc.api.ModInitializer;
@@ -18,6 +19,7 @@ public class SameMobs implements ModInitializer {
         Registry.init();
         SameMobEffects.register();
         SameMobPotions.register();
+        SameMobItem.register();
 
     }
 }

@@ -1,9 +1,11 @@
-package me.codecraft.samemobs.entity.wolflike.entity;
+package me.codecraft.samemobs.entity.wolflike.entity;//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
 
-import me.codecraft.samemobs.effects.SameMobEffects;
+
+import me.codecraft.samemobs.SameMobs;
 import me.codecraft.samemobs.entity.SameMobsEntity;
-import me.codecraft.samemobs.entity.goal.WolfBegGoal1;
-import me.codecraft.samemobs.utils.IEntityDataSaver;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -15,7 +17,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -40,26 +42,18 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.EnumSet;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnimatable, IEntityDataSaver {
-
+public class Base extends TameableEntity implements Angerable {
     private static final TrackedData<Boolean> BEGGING;
     private static final TrackedData<Integer> COLLAR_COLOR;
     private static final TrackedData<Integer> ANGER_TIME;
     public static final Predicate<LivingEntity> FOLLOW_TAMED_PREDICATE;
-    public static final Predicate<LivingEntity> AngeryPredectate;
     private static final float WILD_MAX_HEALTH = 8.0F;
     private static final float TAMED_MAX_HEALTH = 20.0F;
     private float begAnimationProgress;
@@ -69,13 +63,10 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
     private float shakeProgress;
     private float lastShakeProgress;
     private static final UniformIntProvider ANGER_TIME_RANGE;
-    private NbtCompound animation;
     @Nullable
     private UUID angryAt;
 
-    private AnimationFactory factory = new AnimationFactory(this);
-
-    public WolfLikeEntity2(EntityType<? extends WolfLikeEntity2> entityType, World world) {
+    public Base(EntityType<? extends Base> entityType, World world) {
         super(entityType, world);
         this.setTamed(false);
         this.setPathfindingPenalty(PathNodeType.POWDER_SNOW, -1.0F);
@@ -84,74 +75,25 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
 
     protected void initGoals() {
         this.goalSelector.add(1, new SwimGoal(this));
-        this.goalSelector.add(1, new WolfLikeEntity2.WolfEscapeDangerGoal(1.5));
+        this.goalSelector.add(1, new WolfEscapeDangerGoal(1.5));
         this.goalSelector.add(2, new SitGoal(this));
-        this.goalSelector.add(3, new WolfLikeEntity2.AvoidLlamaGoal(this, LlamaEntity.class, 24.0F, 1.5, 1.5));
+        this.goalSelector.add(3, new AvoidLlamaGoal(this, LlamaEntity.class, 24.0F, 1.5, 1.5));
         this.goalSelector.add(4, new PounceAtTargetGoal(this, 0.4F));
         this.goalSelector.add(5, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
         this.goalSelector.add(7, new AnimalMateGoal(this, 1.0));
         this.goalSelector.add(8, new WanderAroundFarGoal(this, 1.0));
-        this.goalSelector.add(9, new WolfLikeEntity2.WolfBegGoal(this, 8.0F));
+        this.goalSelector.add(9, new Base.WolfBegGoal(this, 8.0F));
         this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
         this.targetSelector.add(3, (new RevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
-        this.targetSelector.add(4, new ActiveTargetGoal(this, PlayerEntity.class, 10, true,false,AngeryPredectate));
+        this.targetSelector.add(4, new ActiveTargetGoal(this, PlayerEntity.class, 10, true, false,(Predicate<LivingEntity>) this::shouldAngerAt));
         this.targetSelector.add(5, new UntamedActiveTargetGoal(this, AnimalEntity.class, false, FOLLOW_TAMED_PREDICATE));
         this.targetSelector.add(6, new UntamedActiveTargetGoal(this, TurtleEntity.class, false, TurtleEntity.BABY_TURTLE_ON_LAND_FILTER));
         this.targetSelector.add(7, new ActiveTargetGoal(this, AbstractSkeletonEntity.class, false));
         this.targetSelector.add(8, new UniversalAngerGoal(this, true));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this,"wolf",0f,this::predicate));
-    }
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event){
-        if (this.isAlive()) {
-            this.lastBegAnimationProgress = this.begAnimationProgress;
-            if (this.isBegging()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.beg"));
-                return PlayState.CONTINUE;
-            } else if (this.isSitting()){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.sitting"));
-                return PlayState.CONTINUE;
-            }else if (event.isMoving()){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.walk"));
-                if (this.speed==0.5f){
-                    event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.run"));
-                    return PlayState.CONTINUE;
-                }
-                return PlayState.CONTINUE;
-            }
-            if (this.hasAngerTime()){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.run"));
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.attack"));
-                return PlayState.CONTINUE;
-            }
-            if(this.hasStatusEffect(SameMobEffects.Animation_1)){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.extra_animation_1"));
-                return PlayState.CONTINUE;
-            }
-            if (this.hasStatusEffect(SameMobEffects.Animation_2)){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.extra_animation_2"));
-                return PlayState.CONTINUE;
-            }
-            if (this.hasStatusEffect(SameMobEffects.Animation_3)){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.extra_animation_3"));
-                return PlayState.CONTINUE;
-            }
-
-        }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mob1.idle"));
-        return PlayState.CONTINUE;
     }
 
 
@@ -224,7 +166,49 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
 
     public void tick() {
         super.tick();
+        if (this.isAlive()) {
+            this.lastBegAnimationProgress = this.begAnimationProgress;
+            if (this.isBegging()) {
+                this.begAnimationProgress += (1.0F - this.begAnimationProgress) * 0.4F;
+            } else {
+                this.begAnimationProgress += (0.0F - this.begAnimationProgress) * 0.4F;
+            }
 
+            if (this.isWet()) {
+                this.furWet = true;
+                if (this.canShakeWaterOff && !this.world.isClient) {
+                    this.world.sendEntityStatus(this, (byte)56);
+                    this.resetShake();
+                }
+            } else if ((this.furWet || this.canShakeWaterOff) && this.canShakeWaterOff) {
+                if (this.shakeProgress == 0.0F) {
+                    this.playSound(SoundEvents.ENTITY_WOLF_SHAKE, this.getSoundVolume(), (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+                    this.emitGameEvent(GameEvent.ENTITY_SHAKE);
+                }
+
+                this.lastShakeProgress = this.shakeProgress;
+                this.shakeProgress += 0.05F;
+                if (this.lastShakeProgress >= 2.0F) {
+                    this.furWet = false;
+                    this.canShakeWaterOff = false;
+                    this.lastShakeProgress = 0.0F;
+                    this.shakeProgress = 0.0F;
+                }
+
+                if (this.shakeProgress > 0.4F) {
+                    float f = (float)this.getY();
+                    int i = (int)(MathHelper.sin((this.shakeProgress - 0.4F) * 3.1415927F) * 7.0F);
+                    Vec3d vec3d = this.getVelocity();
+
+                    for(int j = 0; j < i; ++j) {
+                        float g = (this.random.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
+                        float h = (this.random.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
+                        this.world.addParticle(ParticleTypes.SPLASH, this.getX() + (double)g, (double)(f + 0.8F), this.getZ() + (double)h, vec3d.x, vec3d.y, vec3d.z);
+                    }
+                }
+            }
+
+        }
     }
 
     private void resetShake() {
@@ -333,7 +317,7 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
                         this.setSitting(!this.isSitting());
                         this.jumping = false;
                         this.navigation.stop();
-                        this.setTarget((LivingEntity)null);
+                        this.setTarget(null);
                         return ActionResult.SUCCESS;
                     }
 
@@ -357,7 +341,7 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
                 if (this.random.nextInt(3) == 0) {
                     this.setOwner(player);
                     this.navigation.stop();
-                    this.setTarget((LivingEntity)null);
+                    this.setTarget(null);
                     this.setSitting(true);
                     this.world.sendEntityStatus(this, (byte)7);
                 } else {
@@ -430,15 +414,15 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
         this.dataTracker.set(COLLAR_COLOR, color.getId());
     }
 
-    public WolfLikeEntity2 createChild(ServerWorld serverWorld, PassiveEntity passiveEntity) {
-        WolfLikeEntity2 WolfLikeEntity = (WolfLikeEntity2) SameMobsEntity.WOLFLIKEENTITY2.create(serverWorld);
+    public Base createChild(ServerWorld serverWorld, PassiveEntity passiveEntity) {
+        Base base = (Base) SameMobsEntity.WOLFLIKEENTITYBase.create(serverWorld);
         UUID uUID = this.getOwnerUuid();
         if (uUID != null) {
-            WolfLikeEntity.setOwnerUuid(uUID);
-            WolfLikeEntity.setTamed(true);
+            base.setOwnerUuid(uUID);
+            base.setTamed(true);
         }
 
-        return WolfLikeEntity;
+        return base;
     }
 
     public void setBegging(boolean begging) {
@@ -450,16 +434,16 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
             return false;
         } else if (!this.isTamed()) {
             return false;
-        } else if (!(other instanceof WolfLikeEntity2)) {
+        } else if (!(other instanceof Base)) {
             return false;
         } else {
-            WolfLikeEntity2 WolfLikeEntity = (WolfLikeEntity2)other;
-            if (!WolfLikeEntity.isTamed()) {
+            Base Base = (Base)other;
+            if (!Base.isTamed()) {
                 return false;
-            } else if (WolfLikeEntity.isInSittingPose()) {
+            } else if (Base.isInSittingPose()) {
                 return false;
             } else {
-                return this.isInLove() && WolfLikeEntity.isInLove();
+                return this.isInLove() && Base.isInLove();
             }
         }
     }
@@ -470,9 +454,9 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
 
     public boolean canAttackWithOwner(LivingEntity target, LivingEntity owner) {
         if (!(target instanceof CreeperEntity) && !(target instanceof GhastEntity)) {
-            if (target instanceof WolfLikeEntity2) {
-                WolfLikeEntity2 WolfLikeEntity = (WolfLikeEntity2)target;
-                return !WolfLikeEntity.isTamed() || WolfLikeEntity.getOwner() != owner;
+            if (target instanceof Base) {
+                Base Base = (Base)target;
+                return !Base.isTamed() || Base.getOwner() != owner;
             } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).shouldDamagePlayer((PlayerEntity)target)) {
                 return false;
             } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
@@ -493,54 +477,24 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
         return new Vec3d(0.0, (double)(0.6F * this.getStandingEyeHeight()), (double)(this.getWidth() * 0.4F));
     }
 
-    public static boolean canSpawn(EntityType<WolfLikeEntity2> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
+    public static boolean canSpawn(EntityType<Base> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
         return world.getBlockState(pos.down()).isIn(BlockTags.WOLVES_SPAWNABLE_ON) && isLightLevelValidForNaturalSpawn(world, pos);
     }
 
     static {
-        BEGGING = DataTracker.registerData(WolfLikeEntity2.class, TrackedDataHandlerRegistry.BOOLEAN);
-        COLLAR_COLOR = DataTracker.registerData(WolfLikeEntity2.class, TrackedDataHandlerRegistry.INTEGER);
-        ANGER_TIME = DataTracker.registerData(WolfLikeEntity2.class, TrackedDataHandlerRegistry.INTEGER);
+        BEGGING = DataTracker.registerData(Base.class, TrackedDataHandlerRegistry.BOOLEAN);
+        COLLAR_COLOR = DataTracker.registerData(Base.class, TrackedDataHandlerRegistry.INTEGER);
+        ANGER_TIME = DataTracker.registerData(Base.class, TrackedDataHandlerRegistry.INTEGER);
         FOLLOW_TAMED_PREDICATE = (entity) -> {
             EntityType<?> entityType = entity.getType();
             return entityType == EntityType.SHEEP || entityType == EntityType.RABBIT || entityType == EntityType.FOX;
         };
         ANGER_TIME_RANGE = TimeHelper.betweenSeconds(20, 39);
-        AngeryPredectate = (entity) ->{
-            EntityType<?> entityType = entity.getType();
-            ServerWorld serverWorld = (ServerWorld) entity.world;
-            return entityType==EntityType.PLAYER;
-
-        };
-    }
-    @Override
-    public NbtCompound getPersistentData() {
-        if(this.animation == null) {
-            this.animation = new NbtCompound();
-        }
-        return animation;
-    }
-
-
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
-        if(animation!=null){
-            nbt.put("samemob.aniamtion_data",animation);
-        }
-        return super.writeNbt(nbt);
-    }
-
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        if (nbt.contains("samemob.aniamtion_data", 10)) {
-            animation = nbt.getCompound("samemob.aniamtion_data");
-        }
-        super.readNbt(nbt);
     }
 
     class WolfEscapeDangerGoal extends EscapeDangerGoal {
         public WolfEscapeDangerGoal(double speed) {
-            super(WolfLikeEntity2.this, speed);
+            super(Base.this, speed);
         }
 
         protected boolean isInDanger() {
@@ -549,9 +503,9 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
     }
 
     private class AvoidLlamaGoal<T extends LivingEntity> extends FleeEntityGoal<T> {
-        private final WolfLikeEntity2 wolf;
+        private final Base wolf;
 
-        public AvoidLlamaGoal(WolfLikeEntity2 wolf, Class<T> fleeFromType, float distance, double slowSpeed, double fastSpeed) {
+        public AvoidLlamaGoal(Base wolf, Class<T> fleeFromType, float distance, double slowSpeed, double fastSpeed) {
             super(wolf, fleeFromType, distance, slowSpeed, fastSpeed);
             this.wolf = wolf;
         }
@@ -565,21 +519,21 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
         }
 
         private boolean isScaredOf(LlamaEntity llama) {
-            return llama.getStrength() >= WolfLikeEntity2.this.random.nextInt(5);
+            return llama.getStrength() >= Base.this.random.nextInt(5);
         }
 
         public void start() {
-            WolfLikeEntity2.this.setTarget((LivingEntity)null);
+            Base.this.setTarget(null);
             super.start();
         }
 
         public void tick() {
-            WolfLikeEntity2.this.setTarget((LivingEntity)null);
+            Base.this.setTarget(null);
             super.tick();
         }
     }
     public class WolfBegGoal extends Goal {
-        private final WolfLikeEntity2 wolf;
+        private final Base wolf;
         @Nullable
         private PlayerEntity begFrom;
         private final World world;
@@ -587,17 +541,17 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
         private int timer;
         private final TargetPredicate validPlayerPredicate;
 
-        public WolfBegGoal(WolfLikeEntity2 wolf, float begDistance) {
+        public WolfBegGoal(Base wolf, float begDistance) {
             this.wolf = wolf;
             this.world = wolf.world;
             this.begDistance = begDistance;
-            this.validPlayerPredicate = TargetPredicate.createNonAttackable().setBaseMaxDistance((double)begDistance);
+            this.validPlayerPredicate = TargetPredicate.createNonAttackable().setBaseMaxDistance(begDistance);
             this.setControls(EnumSet.of(Control.LOOK));
         }
 
         public boolean canStart() {
             this.begFrom = this.world.getClosestPlayer(this.validPlayerPredicate, this.wolf);
-            return this.begFrom == null ? false : this.isAttractive(this.begFrom);
+            return this.begFrom != null && this.isAttractive(this.begFrom);
         }
 
         public boolean shouldContinue() {
@@ -644,6 +598,4 @@ public class WolfLikeEntity2 extends TameableEntity implements Angerable, IAnima
             return false;
         }
     }
-
-
 }

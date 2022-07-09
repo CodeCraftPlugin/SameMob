@@ -15,7 +15,7 @@ public class SameMobItem {
     private static Item register(String name,Item item){
         return Registry.register(Registry.ITEM,new Identifier(SameMobs.MOD_ID,name),item);
     }
-    public static void registerEntity(){
+    public static void register(){
         SameMobs.LOGGER.info("registered all the items " + SameMobs.MOD_ID);
     }
 }

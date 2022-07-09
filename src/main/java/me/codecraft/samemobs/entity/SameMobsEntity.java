@@ -14,7 +14,9 @@ public class SameMobsEntity {
     public static final EntityType<WolfLikeEntity> WOLFLIKEENTITY = registery("wolf_like_1", FabricEntityTypeBuilder.
             create(SpawnGroup.CREATURE, WolfLikeEntity::new).dimensions(EntityDimensions.fixed(0.6F,0.85F)).trackRangeBlocks(10)
             .build());
-
+    public static final EntityType<Base> WOLFLIKEENTITYBase = registery("wolf_like_1_base", FabricEntityTypeBuilder.
+            create(SpawnGroup.CREATURE, Base::new).dimensions(EntityDimensions.fixed(0.6F,0.85F)).trackRangeBlocks(10)
+            .build());
     public static final EntityType<WolfLikeEntity1> WOLFLIKEENTITY1 = registery("wolf_like_2", FabricEntityTypeBuilder.
             create(SpawnGroup.CREATURE, WolfLikeEntity1::new).dimensions(EntityDimensions.fixed(0.6F,0.85F)).trackRangeBlocks(10)
             .build());

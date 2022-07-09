@@ -1,0 +1,16 @@
+{
+  "entity.samemob.wolf_like_1": "Wolf 1",
+  "entity.samemob.wolf_like_2": "Wolf 2",
+  "entity.samemob.wolf_like_3": "Wolf 3",
+  "entity.samemob.wolf_like_4": "Wolf 4",
+  "entity.samemob.wolf_like_5": "Wolf 5",
+  "entity.samemob.wolf_like_7": "Wolf 6",
+  "entity.samemob.wolf_like_6": "Wolf 7",
+  "entity.samemob.wolf_like_8": "Wolf 8",
+  "entity.samemob.wolf_like_9": "Wolf 9",
+  "entity.samemob.wolf_like_10": "Wolf 10",
+
+  "effect.samemob.extra_animation_1": "Animation Trigger 1",
+  "effect.samemob.extra_animation_2": "Animation Trigger 2",
+  "effect.samemob.extra_animation_3": "Animation Trigger 3"
+}
